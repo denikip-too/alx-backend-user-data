@@ -6,7 +6,7 @@ import logging
 
 
 def filter_datum(fields: List[str], redaction: str, message: List[str]
-        , separator: str):
+        , separator: str) -> str:
     """returns the log message obfuscated"""
     for text in fields:
         message = re.sub(f'{text}=.*?{separator}'
@@ -34,5 +34,9 @@ class RedactingFormatter(logging.Formatter):
         return super(RedactingFormatter, self).format(record)
 
 
-def get_logger(logging.Logger):
+PII_FIELDS = ["name", "email", "phone", "ssn", "password"]
+
+
+def get_logger() -> logging.Logger:
     """Creating logger"""
+    logging.basicConfig(level=logging.INFO)
