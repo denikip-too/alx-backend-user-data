@@ -3,6 +3,7 @@
 import re
 from typing import List
 import logging
+import os
 
 
 def filter_datum(
@@ -11,8 +12,8 @@ def filter_datum(
     """returns the log message obfuscated"""
     for text in fields:
         message = re.sub(
-                f'{text}=.*?{separator}', f'
-                {text}={redaction}{separator}', message)
+                f'{text}=.*?{separator}', f'{text}={redaction}{separator}
+                ', message)
     return message
 
 
