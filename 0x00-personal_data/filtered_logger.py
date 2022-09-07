@@ -14,7 +14,7 @@ def filter_datum(
         message = re.sub(
                 f'{text}=.*?{separator}', f'{text}={redaction}{separator}',
                 message)
-    return message
+    return (message)
 
 
 class RedactingFormatter(logging.Formatter):
@@ -29,7 +29,7 @@ class RedactingFormatter(logging.Formatter):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
-    def format(self, record: logging.LogRecord) -> str:
+    def format(self, record: str) -> str:
         """filter values in incoming log records using filter_datum"""
         record.msg = filter_datum(
                 self.fields, self.REDACTION, record.getMessage(
