@@ -31,9 +31,4 @@ class Auth:
 
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None - request will be the Flask request object"""
-        return (None)
-
-
-class BasicAuth(Auth):
-    """BasicAuth that inherits from Auth"""
-    pass
+        return None
