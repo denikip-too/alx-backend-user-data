@@ -41,7 +41,7 @@ def check_auth():
         return None
     if auth.session_cookie(request):
         abort(401)
-    if auth.current_user(request) == request.current_user:
+    if auth.current_user(request):
         abort(403)
 
 
