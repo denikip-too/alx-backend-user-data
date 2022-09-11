@@ -33,10 +33,13 @@ def check_auth():
     if auth is None:
         return
     excluded_paths = [
-            '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+            '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/']
     if not auth.require_auth(request.path, excluded_paths):
         return
-    if auth.authorization_header(request) is None:
+    if auth.authorization_header(request):
+        return None
+    if auth.session_cookie(request):
         abort(401)
     if auth.current_user(request) == request.current_user:
         abort(403)
