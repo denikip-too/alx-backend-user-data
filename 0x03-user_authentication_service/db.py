@@ -43,20 +43,28 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """returns the first row found in the users table"""
+        if not kwargs:
+            raise NoResultFound
         keys = User.__table__.columns.keys()
         for key in kwargs.keys():
             if key not in keys:
                 raise InvalidRequestError
-        res = self._session.query(User).filter_by(**kwargs).first()
+        res = self._session.query(User).filter_by(**kwargs).one()
         if res is None:
             raise NoResultFound
         self._session.commit()
         return res
 
-    def update_user(self, user_id: int, updt: str) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """takes as argument a required user_id integer
         and arbitrary keyword arguments and return None"""
-        try:
-            update({find_user_by(user_id): User.updt})
-        except ValueError:
-            raise
+        if not kwargs:
+            raise ValueError
+        keys = User.__table__.columns.keys()
+        user = self.find_user_by()
+        for key, value in user:
+            if key not in keys:
+                raise ValueError
+        res = self._session.query(user).update(**kwargs)
+        self._session.commit()
+        return res
