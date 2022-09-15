@@ -39,19 +39,19 @@ class DB:
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
-
         return user
 
-    def find_user_by(self, result: str):
+    def find_user_by(self, **kwargs) -> User:
         """returns the first row found in the users table"""
-        try:
-            res = self._session.query(User).one()
-            self._session.commit()
-            return res.result
-        except NoResultFound:
-            raise
-        except InvalidRequestError:
-            raise
+        keys = User.__table__.columns.keys()
+        for key in kwargs.keys():
+            if key not in keys:
+                raise InvalidRequestError
+        res = self._session.query(User).filter_by(**kwargs).first()
+        if res is None:
+            raise NoResultFound
+        self._session.commit()
+        return res
 
     def update_user(self, user_id: int, updt: str) -> None:
         """takes as argument a required user_id integer
