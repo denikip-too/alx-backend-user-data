@@ -3,7 +3,7 @@
 import bcrypt
 from user import User
 from db import DB
-import uuid
+from uuid import uuid4
 
 
 def _hash_password(password: str) -> bytes:
