@@ -10,13 +10,13 @@ AUTH = Auth()
 
 
 @app.route("/", method=['GET'], strict_slashes=False)
-def index():
+def index() -> str:
     """return a JSON payload"""
     return jsonify({"message": "Bienvenue"})
 
 
 @app.route("users", method=['POST'], strict_slashes=False)
-def users(email: str, password: str):
+def users(email: str, password: str) -> str:
     """Register user"""
     try:
         user = AUTH.register_user(email, password)
