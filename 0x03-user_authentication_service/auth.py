@@ -11,7 +11,7 @@ def _hash_password(password: str) -> bytes:
     password, hashed with bcrypt.hashpw
     """
     salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password, salt)
+    hashed = bcrypt.hashpw(password.encode(), salt)
     return hashed
 
 
