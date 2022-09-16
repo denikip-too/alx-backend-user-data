@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Basic Flask app"""
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 from auth import Auth
 
 
@@ -21,12 +21,13 @@ def register_users(email: str, password: str) -> str:
         email = request.form['email']
         password = request.form['password']
     except ValueError:
-        return 400
+        abort(400)
 
     try:
         user = AUTH.register_user(email, password)
     except ValueError:
-        return jsonify({"email": "<registered email>", "message": "user created"})
+        return jsonify(
+                {"email": "<registered email>", "message": "user created"})
     else:
         return jsonify({"message": "email already registered"})
 
