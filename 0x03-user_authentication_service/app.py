@@ -19,9 +19,11 @@ def index() -> str:
 def register_users(email: str, password: str) -> str:
     """Register user"""
     try:
+        email = request.form['email']
+        password = request.form['password']
         user = AUTH.register_user(email, password)
     except NoResultFound:
-        user = AUTH._db.add_user(email, password)
+        user = AUTH.register_user(email, password)
         return jsonify({"email": f"{email}", "message": "user created"})
     else:
         abort(400)
