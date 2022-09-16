@@ -13,20 +13,3 @@ AUTH = Auth()
 def index() -> str:
     """return a JSON payload"""
     return jsonify({"message": "Bienvenue"})
-
-
-@app.route("users", methods=['POST'], strict_slashes=False)
-def register_users(email: str, password: str) -> str:
-    """Register user"""
-    try:
-        user = AUTH.register_user(email, password)
-    except NoResultFound:
-        user = AUTH._db.add_user(email, password)
-        return jsonify({"email": f"{email}", "message": "user created"})
-    else:
-        abort(400)
-        return jsonify({"message": "email already registered"})
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
