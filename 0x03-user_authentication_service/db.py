@@ -61,10 +61,9 @@ class DB:
         if not kwargs:
             raise ValueError
         keys = User.__table__.columns.keys()
-        user = self.find_user_by()
-        for key, value in user:
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
             if key not in keys:
                 raise ValueError
-        res = self._session.query(user).update(**kwargs)
+            setattr(user, key, value)
         self._session.commit()
-        return res
