@@ -21,15 +21,14 @@ def register_users(email: str, password: str) -> str:
         email = request.form['email']
         password = request.form['password']
     except ValueError:
-        abort(400)
+        abort(404)
 
     try:
         user = AUTH.register_user(email, password)
     except ValueError:
         return jsonify(
                 {"email": "<registered email>", "message": "user created"})
-    else:
-        return jsonify({"message": "email already registered"})
+    return jsonify({"message": "email already registered"})
 
 
 if __name__ == "__main__":
