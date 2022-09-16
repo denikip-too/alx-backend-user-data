@@ -2,7 +2,6 @@
 """Basic Flask app"""
 from flask import Flask, jsonify
 from auth import Auth
-from sqlalchemy.orm.exc import NoResultFound
 
 
 app = Flask(__name__)
@@ -21,7 +20,7 @@ def register_users(email: str, password: str) -> str:
     try:
         email = request.form['email']
         password = request.form['password']
-    except NoResultFound:
+    except ValueError:
         abort(400)
     try:
         user = AUTH.register_user(email, password)
