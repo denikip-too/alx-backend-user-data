@@ -21,11 +21,13 @@ def register_users(email: str, password: str) -> str:
     try:
         email = request.form['email']
         password = request.form['password']
+    except NoResultFound:
+        abort(400)
+    try:
         user = AUTH.register_user(email, password)
     except ValueError:
         return jsonify({"email": f"{email}", "message": "user created"})
     else:
-        abort(400)
         return jsonify({"message": "email already registered"})
 
 
