@@ -21,7 +21,8 @@ def register_users(email: str, password: str) -> str:
         email = request.form['email']
         password = request.form['password']
     except ValueError:
-        abort(400)
+        return 400
+
     try:
         user = AUTH.register_user(email, password)
     except ValueError:
