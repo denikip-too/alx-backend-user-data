@@ -21,7 +21,7 @@ def register_users(email: str, password: str) -> str:
         email = request.form['email']
         password = request.form['password']
     except KeyError:
-        abort(400)
+        abort(404)
 
     try:
         user = AUTH.register_user(email, password)
