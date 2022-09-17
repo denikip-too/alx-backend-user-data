@@ -42,13 +42,14 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """Credentials validation"""
-        user = self._db.find_user_by(email=email)
-        if user is not None:
-            if bcrypt.checkpw(password.encode('utf8'), user.hashed_password):
-                return True
-            else:
-                return False
-        else:
+        try:
+            user = self._db.find_user_by(email=email)
+            if user is not None:
+                if bcrypt.checkpw(password.encode('utf8'), user.hashed_password):
+                    return True
+                else:
+                    return False
+        except NoResultFound:
             return False
 
     def create_session(self, email: str) -> str:
