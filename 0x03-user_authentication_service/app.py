@@ -17,8 +17,11 @@ def index() -> str:
 @app.route("/users", methods=['POST'], strict_slashes=False)
 def register_users() -> str:
     """Register user"""
-    email = request.form['email']
-    password = request.form['password']
+    try:
+        email = request.form['email']
+        password = request.form['password']
+    except KeyError:
+        abort(400)
 
     try:
         user = AUTH.register_user(email, password)
