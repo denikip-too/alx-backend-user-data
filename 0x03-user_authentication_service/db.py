@@ -49,7 +49,7 @@ class DB:
         for key in kwargs.keys():
             if key not in keys:
                 raise InvalidRequestError
-        res = self._session.query(User).filter_by(**kwargs).one()
+        res = self._session.query(User).filter_by(**kwargs).first()
         if res is None:
             raise NoResultFound
         self._session.commit()
