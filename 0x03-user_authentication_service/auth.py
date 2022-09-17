@@ -43,8 +43,8 @@ class Auth:
     def valid_login(self, email: str, password: str) -> bool:
         """Credentials validation"""
         user = self._db.find_user_by(email=email)
-        if user is not None:
-            if bcrypt.checkpw(users['password']):
+        if user not None:
+            if bcrypt.checkpw(users._hash_password(password)):
                 return True
             else:
                 return False
@@ -54,6 +54,6 @@ class Auth:
     def create_session(self, email: str) -> str:
         """Get session ID"""
         user = self._db.find_user_by(email=email)
-        if user is not None:
+        if user not None:
             users['session_id'] = _generate_uuid()
             return (users['session_id'])
