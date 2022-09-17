@@ -38,11 +38,12 @@ def login() -> str:
     except KeyError:
         abort(401)
 
-    try:
-        user_login = AUTH.valid_login(email, password)
-    except NoResultFound:
+    user_login = AUTH.valid_login(email, password)
+    if user_login is True:
         session_id = AUTH.create_session(email)
         return jsonify({"email": "<user email>", "message": "logged in"})
+    else:
+        abort(401)
 
 
 if __name__ == "__main__":
