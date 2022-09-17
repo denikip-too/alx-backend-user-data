@@ -19,7 +19,6 @@ def register_users() -> str:
     """Register user"""
     email = request.form['email']
     password = request.form['password']
-
     try:
         user = AUTH.register_user(email, password)
     except ValueError:
@@ -27,6 +26,19 @@ def register_users() -> str:
     else:
         return jsonify(
                 {"email": "<registered email>", "message": "user created"})
+
+
+@app.route("/sessions", methods=['POST'], strict_slashes=False)
+def login(): -> str:
+    """Log in"""
+    email = request.form['email']
+    password = request.form['password']
+    try:
+        user_login = AUTH.valid_login(email, password)
+    except ValueError:
+        abort(401)
+    else:
+        return jsonify({"email": "<user email>", "message": "logged in"})
 
 
 if __name__ == "__main__":
