@@ -44,7 +44,9 @@ class Auth:
         """Credentials validation"""
         user = self._db.find_user_by(email=email)
         if user is not None:
-            if bcrypt.checkpw(user.hashed_password):
+            if bcrypt.checkpw(
+                    password.encode('utf8'),
+                    user.hashed_password.encode('utf8')):
                 return True
             else:
                 return False
