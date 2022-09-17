@@ -54,6 +54,6 @@ class Auth:
     def create_session(self, email: str) -> str:
         """Get session ID"""
         user = self._db.find_user_by(email=email)
-        if user not None:
-            users['session_id'] = _generate_uuid()
-            return (users['session_id'])
+        if user is not None:
+            user.session_id = _generate_uuid()
+            return (user.session_id)
