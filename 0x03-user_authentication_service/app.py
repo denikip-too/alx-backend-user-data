@@ -2,6 +2,7 @@
 """Basic Flask app"""
 from flask import Flask, jsonify, request, abort
 from auth import Auth
+from sqlalchemy.orm.exc import NoResultFound
 
 
 app = Flask(__name__)
@@ -31,13 +32,16 @@ def register_users() -> str:
 @app.route("/sessions", methods=['POST'], strict_slashes=False)
 def login() -> str:
     """Log in"""
-    email = request.form['email']
-    password = request.form['password']
+    try:
+        email = request.form['email']
+        password = request.form['password']
+    except KeyError:
+        abort(401)
+
     try:
         user_login = AUTH.valid_login(email, password)
-    except ValueError:
-        abort(401)
-    else:
+    except NoResultFound:
+        session_id = AUTH.create_session(email)
         return jsonify({"email": "<user email>", "message": "logged in"})
 
 
