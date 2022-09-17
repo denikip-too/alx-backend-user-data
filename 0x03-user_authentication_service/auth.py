@@ -43,7 +43,7 @@ class Auth:
     def valid_login(self, email: str, password: str) -> bool:
         """Credentials validation"""
         user = self._db.find_user_by(email=email)
-        if user not None:
+        if user is not None:
             if bcrypt.checkpw(users._hash_password(password)):
                 return True
             else:
