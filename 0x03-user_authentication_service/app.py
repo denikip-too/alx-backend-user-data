@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Basic Flask app"""
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -69,7 +69,7 @@ def profile():
     user = AUTH.get_user_from_session_id(session_id)
     if not user:
         abort(403)
-    return jsonify({"email": "<user email>"}), 200
+    return jsonify({"email": user.email}), 200
 
 
 if __name__ == "__main__":
