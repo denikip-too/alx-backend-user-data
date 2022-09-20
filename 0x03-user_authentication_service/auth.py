@@ -64,6 +64,6 @@ class Auth:
     def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """Find user by session ID"""
         user = self._db.find_user_by(email=email)
-        if session_id is None or user is None:
+        if session_id is None and user is None:
             return None
         return user
