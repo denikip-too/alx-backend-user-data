@@ -2,6 +2,7 @@
 """Auth class"""
 from flask import request
 from typing import List, TypeVar
+from os import getenv
 
 
 class Auth:
@@ -15,13 +16,23 @@ class Auth:
             return True
         if path in excluded_paths:
             return False
-        path_a = '/api/v1/status/'
-        for i in excluded_paths:
-            for j in range(0, len(i)):
-                if j.endswith('/') and j.startswith(path_a, 0, 14):
+        path_l = len(path)
+        slash_path = True if path[path_l - 1] == '/' else False
+
+        tmp_path = path
+        if not slash_path:
+            tmp_path += '/'
+        for exec in excluded_paths:
+            exec_l = len(exec)
+            if exec_l == 0:
+                continue
+            if exec[exec_l - 1] != '*':
+                if tmp_path == exec:
                     return False
-        if i == '/api/v1/status/' in excluded_paths:
-            return False
+            else:
+                if exec[:-1] == path[:exec_l - 1]:
+                    return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """returns None - request"""
@@ -32,3 +43,8 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None - request will be the Flask request object"""
         return None
+
+    def session_cookie(self, request=None):
+        """returns a cookie value from a request"""
+        if request is None:
+            return None
