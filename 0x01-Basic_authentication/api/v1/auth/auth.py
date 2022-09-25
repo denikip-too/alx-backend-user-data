@@ -2,6 +2,7 @@
 """Auth class"""
 from flask import request
 from typing import List, TypeVar
+import os
 
 
 class Auth:
@@ -9,19 +10,29 @@ class Auth:
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """returns False - path and excluded_paths"""
-        if path is None or path not in excluded_paths:
+        if path is None:
             return True
         if excluded_paths is None or len(excluded_paths) == 0:
             return True
         if path in excluded_paths:
             return False
-        path_a = '/api/v1/status/'
-        for i in excluded_paths:
-            for j in range(0, len(i)):
-                if j.endswith('/') and j.startswith(path_a, 0, 14):
+        path_l = len(path)
+        slash_path = True if path[path_l - 1] == '/' else False
+
+        tmp_path = path
+        if not slash_path:
+            tmp_path += '/'
+        for exec in excluded_paths:
+            exec_l = len(exec)
+            if exec_l == 0:
+                continue
+            if exec[exec_l - 1] != '*':
+                if tmp_path == exec:
                     return False
-        if i == '/api/v1/status/' in excluded_paths:
-            return False
+            else:
+                if exec[:-1] == path[:exec_l - 1]:
+                    return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """returns None - request"""
